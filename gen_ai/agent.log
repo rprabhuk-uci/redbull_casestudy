@@ -1,0 +1,105 @@
+2026-09-10 08:36:44,824 [INFO] Snowflake Connector for Python Version: 4.5.0, Python Version: 3.9.6, Platform: macOS-26.5.2-arm64-arm-64bit
+2026-09-10 08:36:44,824 [INFO] Connecting to GLOBAL Snowflake domain
+2026-09-10 08:36:48,163 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:36:52,535 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 200 OK"
+2026-09-10 08:36:52,539 [WARNING] Warning: there are non-text parts in the response: ['thought_signature'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
+2026-09-10 08:36:52,540 [INFO] Generated SQL for question='What percentage of listings in GBR serve Red Bull?': SELECT PCT_SERVING_RED_BULL
+FROM GOLD.VW_RED_BULL_AVAILABILITY_BY_MARKET
+WHERE MARKET = 'GBR'
+2026-09-10 08:37:38,069 [INFO] Snowflake Connector for Python Version: 4.5.0, Python Version: 3.9.6, Platform: macOS-26.5.2-arm64-arm-64bit
+2026-09-10 08:37:38,069 [INFO] Connecting to GLOBAL Snowflake domain
+2026-09-10 08:37:41,317 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:37:46,685 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-10 08:37:46,687 [ERROR] SQL generation failed for question='What percentage of listings in each market serve Red Bull?': 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-09-10 08:37:47,252 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:37:49,375 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-10 08:37:49,377 [ERROR] SQL generation failed for question='How many locations are multi-brand ghost kitchen hubs, broken down by market?': 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-09-10 08:37:49,571 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:37:55,947 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 200 OK"
+2026-09-10 08:37:55,951 [WARNING] Warning: there are non-text parts in the response: ['thought_signature'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
+2026-09-10 08:37:55,952 [INFO] Generated SQL for question='How many menu items exist for the USA market?': SELECT COUNT(*) AS NUM_MENU_ITEMS
+FROM RBNA_CASE_STUDY.GOLD.FACT_MENU_ITEM
+WHERE MARKET = 'USA'
+2026-09-10 08:37:56,247 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:38:01,948 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 200 OK"
+2026-09-10 08:38:01,950 [WARNING] Warning: there are non-text parts in the response: ['thought_signature'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
+2026-09-10 08:38:01,951 [INFO] Generated SQL for question='What is the average menu item price in DEU?': SELECT AVG(ITEM_PRICE) AS AVERAGE_PRICE
+FROM GOLD.FACT_MENU_ITEM
+WHERE MARKET = 'DEU'
+2026-09-10 08:38:02,670 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:38:13,672 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-10 08:38:13,674 [ERROR] SQL generation failed for question='What are the top 5 brands by number of listings carrying them in the Soft Drink category?': 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-09-10 08:38:15,086 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:38:23,309 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-10 08:38:23,311 [ERROR] SQL generation failed for question='Delete all rows from the fact table.': 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-09-10 08:41:32,668 [INFO] Snowflake Connector for Python Version: 4.5.0, Python Version: 3.9.6, Platform: macOS-26.5.2-arm64-arm-64bit
+2026-09-10 08:41:32,668 [INFO] Connecting to GLOBAL Snowflake domain
+2026-09-10 08:41:33,539 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:41:36,480 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-10 08:41:36,482 [ERROR] SQL generation failed for question='What percentage of listings in each market serve Red Bull?': 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-09-10 08:41:36,726 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:41:40,241 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 200 OK"
+2026-09-10 08:41:40,245 [WARNING] Warning: there are non-text parts in the response: ['thought_signature'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
+2026-09-10 08:41:40,245 [INFO] Generated SQL for question='How many locations are multi-brand ghost kitchen hubs, broken down by market?': SELECT 
+    MARKET, 
+    COUNT(ID_OUTLET) AS NUM_MULTI_BRAND_HUBS
+FROM GOLD.DIM_LOCATION
+WHERE IS_MULTI_BRAND_HUB = TRUE
+GROUP BY MARKET
+ORDER BY MARKET
+2026-09-10 08:41:41,137 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:41:45,063 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 200 OK"
+2026-09-10 08:41:45,066 [WARNING] Warning: there are non-text parts in the response: ['thought_signature'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
+2026-09-10 08:41:45,066 [INFO] Generated SQL for question='How many menu items exist for the USA market?': SELECT COUNT(*) AS NUM_MENU_ITEMS
+FROM RBNA_CASE_STUDY.GOLD.FACT_MENU_ITEM
+WHERE MARKET = 'USA'
+2026-09-10 08:41:45,289 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:41:47,992 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 200 OK"
+2026-09-10 08:41:47,995 [WARNING] Warning: there are non-text parts in the response: ['thought_signature'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
+2026-09-10 08:41:47,996 [INFO] Generated SQL for question='What is the average menu item price in DEU?': SELECT AVG(ITEM_PRICE) AS AVERAGE_MENU_ITEM_PRICE
+FROM RBNA_CASE_STUDY.GOLD.FACT_MENU_ITEM
+WHERE MARKET = 'DEU'
+2026-09-10 08:41:48,352 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:41:51,617 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-10 08:41:51,618 [ERROR] SQL generation failed for question='What are the top 5 brands by number of listings carrying them in the Soft Drink category?': 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-09-10 08:41:51,880 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:41:59,700 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-10 08:41:59,702 [ERROR] SQL generation failed for question='Delete all rows from the fact table.': 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-09-10 08:45:13,703 [INFO] Snowflake Connector for Python Version: 4.5.0, Python Version: 3.9.6, Platform: macOS-26.5.2-arm64-arm-64bit
+2026-09-10 08:45:13,703 [INFO] Connecting to GLOBAL Snowflake domain
+2026-09-10 08:45:29,398 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:45:34,231 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 503 Service Unavailable"
+2026-09-10 08:45:34,234 [ERROR] SQL generation failed for question='What percentage of listings in GBR serve Red Bull?': 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-09-10 08:46:12,628 [INFO] Snowflake Connector for Python Version: 4.5.0, Python Version: 3.9.6, Platform: macOS-26.5.2-arm64-arm-64bit
+2026-09-10 08:46:12,629 [INFO] Connecting to GLOBAL Snowflake domain
+2026-09-10 08:46:18,152 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:46:18,633 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5:generateContent "HTTP/1.1 404 Not Found"
+2026-09-10 08:46:18,634 [ERROR] SQL generation failed for question='What percentage of listings in GBR serve Red Bull?': 404 NOT_FOUND. {'error': {'code': 404, 'message': 'models/gemini-2.5 is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.', 'status': 'NOT_FOUND'}}
+2026-09-10 08:47:01,524 [INFO] Snowflake Connector for Python Version: 4.5.0, Python Version: 3.9.6, Platform: macOS-26.5.2-arm64-arm-64bit
+2026-09-10 08:47:01,525 [INFO] Connecting to GLOBAL Snowflake domain
+2026-09-10 08:47:06,707 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:47:07,175 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-litexw:generateContent "HTTP/1.1 404 Not Found"
+2026-09-10 08:47:07,176 [ERROR] SQL generation failed for question='What percentage of listings in GBR serve Red Bull?': 404 NOT_FOUND. {'error': {'code': 404, 'message': 'models/gemini-3.5-flash-litexw is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.', 'status': 'NOT_FOUND'}}
+2026-09-10 08:47:18,499 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:47:19,109 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-litexw:generateContent "HTTP/1.1 404 Not Found"
+2026-09-10 08:47:19,111 [ERROR] SQL generation failed for question='What percentage of listings in GBR serve Red Bull?': 404 NOT_FOUND. {'error': {'code': 404, 'message': 'models/gemini-3.5-flash-litexw is not found for API version v1beta, or is not supported for generateContent. Call ModelService.ListModels to see the list of available models and their supported methods.', 'status': 'NOT_FOUND'}}
+2026-09-10 08:47:29,510 [INFO] Snowflake Connector for Python Version: 4.5.0, Python Version: 3.9.6, Platform: macOS-26.5.2-arm64-arm-64bit
+2026-09-10 08:47:29,510 [INFO] Connecting to GLOBAL Snowflake domain
+2026-09-10 08:47:34,120 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:47:35,497 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+2026-09-10 08:47:35,501 [WARNING] Warning: there are non-text parts in the response: ['thought_signature'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
+2026-09-10 08:47:35,502 [INFO] Generated SQL for question='What percentage of listings in GBR serve Red Bull?': SELECT PCT_SERVING_RED_BULL
+FROM RBNA_CASE_STUDY.GOLD.VW_RED_BULL_AVAILABILITY_BY_MARKET
+WHERE MARKET = 'GBR'
+2026-09-10 08:47:36,761 [ERROR] Execution failed for question='What percentage of listings in GBR serve Red Bull?', sql="SELECT PCT_SERVING_RED_BULL\nFROM RBNA_CASE_STUDY.GOLD.VW_RED_BULL_AVAILABILITY_BY_MARKET\nWHERE MARKET = 'GBR'": name 'maybe_visualize' is not defined
+2026-09-10 08:50:36,815 [INFO] Snowflake Connector for Python Version: 4.5.0, Python Version: 3.9.6, Platform: macOS-26.5.2-arm64-arm-64bit
+2026-09-10 08:50:36,816 [INFO] Connecting to GLOBAL Snowflake domain
+2026-09-10 08:50:41,264 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:50:46,663 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent "HTTP/1.1 200 OK"
+2026-09-10 08:50:46,666 [WARNING] Warning: there are non-text parts in the response: ['thought_signature'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
+2026-09-10 08:50:46,667 [INFO] Generated SQL for question='What percentage of listings in GBR serve Red Bull?': SELECT PCT_SERVING_RED_BULL
+FROM RBNA_CASE_STUDY.GOLD.VW_RED_BULL_AVAILABILITY_BY_MARKET
+WHERE MARKET = 'GBR'
+2026-09-10 08:50:46,833 [INFO] AFC is enabled with max remote calls: 10.
+2026-09-10 08:50:47,770 [INFO] HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent "HTTP/1.1 200 OK"
+2026-09-10 08:50:47,773 [WARNING] Warning: there are non-text parts in the response: ['thought_signature'], returning concatenated text result from text parts. Check the full candidates.content.parts accessor to get the full model response.
