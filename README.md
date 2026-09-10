@@ -40,13 +40,11 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Create a `.env` file in the project root (see `.env.example`):
-
 ```
 SNOWFLAKE_ACCOUNT=your_account_identifier
 SNOWFLAKE_USER=your_username
 SNOWFLAKE_PASSWORD=your_password
-SNOWFLAKE_WAREHOUSE=COMPUTE_WH
+SNOWFLAKE_WAREHOUSE=SNOWFLAKE_LEARNING_WH
 SNOWFLAKE_DATABASE=RBNA_CASE_STUDY
 SNOWFLAKE_SCHEMA=RAW
 GEMINI_API_KEY=your_gemini_key
