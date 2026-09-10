@@ -2,8 +2,7 @@
 
 ## 1. Overview
 
-This project builds a Snowflake-based analytics platform for Red Bull North
-America's online food-delivery presence across three markets (USA, GBR,
+This project builds a Snowflake-based analytics platform for Red Bull's online food-delivery presence across three markets (USA, GBR,
 DEU) and multiple delivery platforms per market. It covers ingestion,
 data modeling, quality validation, role-based access control, and a
 GenAI-powered natural-language query agent.
@@ -34,7 +33,7 @@ GOLD schema — star schema (facts + dimensions) + business-question views
 ```
 
 **Why a medallion (raw/silver/gold) structure**: each layer has a single
-responsibility — raw preserves fidelity to source (nothing is lost or
+responsibility: raw preserves fidelity to source (nothing is lost or
 transformed, so any bug downstream can be traced back to real source
 data), silver enforces correctness (validated, typed, deduplicated),
 gold optimizes for consumption (denormalized where it aids query
@@ -46,7 +45,7 @@ silver validation gap or a gold modeling choice, never ambiguous.
 exercise, source files were read directly from local disk, which was
 the most straightforward approach given a fixed, one-time dataset. In
 production, these files would more realistically originate from a
-system like S3 (or a live source database), not a local folder.
+system like S3 (or a live source database).
 Ingestion logic would be written as a reusable, parameterized template
 — source location (an S3 URL prefix, a database connection config, etc.)
 and market/file-type as inputs — rather than hardcoded paths, so the
@@ -63,9 +62,7 @@ types, and future data sources without rewriting it each time.
 **Key discovery — the "ghost kitchen" pattern**: the initial assumption
 was that `id_outlet` + `id_platform` formed the outlet's grain. Verifying
 against real data showed `id_ext_link` is the true grain — the same
-`id_outlet` can host many distinct listings (observed range: 47–138
-listings at a single physical address), reflecting real-world ghost
-kitchens/virtual restaurant brands sharing one commercial kitchen. This
+`id_outlet` can host many distinct listings, reflecting real-world virtual restaurant brands sharing one commercial kitchen. This
 reshaped the model into two separate dimensions (location vs. listing)
 rather than one.
 
@@ -78,11 +75,11 @@ itself derived from Google Maps) when confidence is high (similarity
 score ≥ 0.95 on name or address), falling back to treating a listing as
 its own distinct entity when unresolved — a conservative choice that
 avoids false merges at the cost of a known upper-bound imprecision on
-brand counts (documented, not hidden).
+brand counts.
 
 ## 4. Data Quality — Findings and Handling
 
-All findings below were confirmed against real data, not assumed.
+All findings below were confirmed against real data:
 
 | Finding | Root cause | Handling |
 |---|---|---|
@@ -96,6 +93,57 @@ All findings below were confirmed against real data, not assumed.
 **Validation philosophy**: quarantine, don't discard. Every quarantined
 row is preserved and countable, so data completeness (`clean + quarantine
 = raw`) is provable, not assumed.
+
+## Observability — How You Know Something Broke
+
+**The core idea**: don't wait for a stakeholder to notice bad numbers —
+define expectations about each table up front, check them automatically
+after every load, and alert when they're violated.
+
+**In production, this maps onto tooling that already exists **: dbt's testing framework and
+Dagster's asset checks (the `dagster-dbt` integration surfaces dbt
+tests as Dagster asset checks directly) already provide exactly the
+self-serve model described below — a developer adding a new table
+declares its tests alongside the model definition, and checks run
+automatically as part of every pipeline run, with results visible
+per-asset in Dagster's UI rather than buried in a separate log.
+
+**Common, reusable test types** (dbt's built-in generic tests cover
+most of these directly):
+- **Row count sanity** — a table shouldn't unexpectedly go to zero rows
+  (signals a broken upstream source or a failed load) or spike far
+  beyond its normal range (signals a duplicate load or a join fan-out bug).
+- **Null rate checks** — a column that's normally populated shouldn't
+  suddenly turn mostly-null.
+- **Referential integrity** — every foreign key should resolve to a real
+  row in its parent table (this is exactly what the quarantine logic
+  built for this project already checks manually; in production it
+  becomes a standing test, not a one-time investigation).
+- **Freshness/staleness** — a table that's supposed to load daily
+  shouldn't silently stop updating; check `_loaded_at` age.
+- **Custom, table-specific tests** — for this project specifically:
+  - **Quarantine-rate threshold**: if `SILVER.*_QUARANTINE` row count
+    exceeds a defined threshold (e.g. >100 rows, or >2% of the load) in
+    a single run, that's a signal the source data quality has genuinely
+    shifted.
+  - **Zero-row load check**: if `RAW.OUTLET`/`PORTFOLIO`/`MATCHING` comes
+    back empty after a run that should have loaded data, that's almost
+    certainly a pipeline failure (a bad file path, an auth failure, a
+    silently-empty source), not a legitimate business state, and should
+    alert immediately rather than flow downstream unnoticed.
+
+**Ownership model**: the developer who owns a table defines its tests
+alongside the model, rather than a central team maintaining tests for
+tables they don't have context on — this is the same self-serve
+platform pattern from the data mesh discussion: the platform (dbt/
+Dagster) provides the reusable *mechanism*, but domain knowledge about
+what "correct" looks like for a given table stays with whoever owns it.
+
+**Alerting**: test/check failures route to Slack for day-to-day
+visibility, with PagerDuty escalation for on-call-worthy failures (e.g.
+a zero-row load on a table that feeds a live dashboard) — routine
+threshold noise doesn't need to page someone at 2am, but a broken
+pipeline feeding Red Bull's Sales team should.
 
 ## 5. RBAC
 
@@ -190,7 +238,7 @@ means one unreadable file doesn't abort the whole run.
 ## 9. Scaling Considerations (Production vs. This POC)
 
 - **Orchestration**: this pipeline is manually run scripts; production
-  would use Dagster (per the JD's stack) — each SQL layer becomes an
+  would use Dagster (or Airflow) — each SQL layer becomes an
   asset with declared dependencies, replacing manual run-ordering.
 - **Incremental loading**: this was a one-time full load; production
   would use Snowflake streams + tasks (or dbt incremental models) so
