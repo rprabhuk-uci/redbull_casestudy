@@ -1,0 +1,6 @@
+snowflake-connector-python[pandas]
+pandas
+chardet
+python-dotenv
+google-genai
+matplotlib
