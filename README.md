@@ -1,6 +1,6 @@
 # RBNA Data Engineer Case Study
 
-A Snowflake-based analytics platform for Red Bull North America's online
+A Snowflake-based analytics platform for Red Bull's online
 food-delivery presence across USA, GBR, and DEU — covering ingestion,
 dimensional modeling, data quality validation, role-based access control,
 interactive dashboards, and a GenAI natural-language query agent.
