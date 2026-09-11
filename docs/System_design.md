@@ -85,10 +85,9 @@ All findings below were confirmed against real data:
 |---|---|---|
 | DEU file encoding garbled | Files encoded Windows-1252/ISO-8859-1, not UTF-8 | Per-market encoding fallback chain in ingestion |
 | Malformed quoting caused rows to split into two broken pieces | Source data used backslash-style internal quote escaping (e.g. `\"Southern fried\"`) instead of standard CSV doubled-quote escaping (`""`); standard parsing reads the first internal quote as the field's real closing quote, splitting one row into a truncated "front half" (passes ID validation, lands silently in the clean table missing trailing content) and an orphaned "back half" fragment (no valid ID, correctly quarantined) | Root-caused via manual raw-file inspection; **fixed** by adding `escapechar="\\"` to the CSV read configuration — quarantine count dropped from 185,253 to 0, with previously-split rows now parsing as complete, correct single records |
-| Portfolio: 185,253 / ~14M rows (1.3%) affected | Same root cause as above | Quarantined in `SILVER.PORTFOLIO_QUARANTINE`; confirmed the same rows also caused the "orphaned FK" symptom — one root cause, two symptoms |
 | Raw `MARKET` field inconsistent (US/USA, DE/DEU, UK/null) | Inconsistent source export conventions | Used `_source_market`, tagged reliably from folder structure at ingestion time — critical since RBAC filters on this field |
 | No `portfolio` file for USA | Genuine data gap, not a pipeline bug | Documented; `FACT_MENU_ITEM`/competitor views correctly have zero USA rows |
-| Ambiguous/undocumented fields (`LEADING_ID_EXT_LINK`, `sd_coke`, `ed`, etc.) | No documentation available | Kept as raw pass-through, not guessed at or renamed with an asserted meaning |
+| Ambiguous/undocumented fields (`LEADING_ID_EXT_LINK`, `sd_coke`, `ed`, etc.) | No documentation available | Kept as raw pass-through |
 
 **Validation philosophy**: quarantine, don't discard. Every quarantined
 row is preserved and countable, so data completeness (`clean + quarantine
@@ -134,16 +133,11 @@ most of these directly):
 
 **Ownership model**: the developer who owns a table defines its tests
 alongside the model, rather than a central team maintaining tests for
-tables they don't have context on — this is the same self-serve
-platform pattern from the data mesh discussion: the platform (dbt/
-Dagster) provides the reusable *mechanism*, but domain knowledge about
-what "correct" looks like for a given table stays with whoever owns it.
+tables they don't have context on.
 
 **Alerting**: test/check failures route to Slack for day-to-day
 visibility, with PagerDuty escalation for on-call-worthy failures (e.g.
-a zero-row load on a table that feeds a live dashboard) — routine
-threshold noise doesn't need to page someone at 2am, but a broken
-pipeline feeding Red Bull's Sales team should.
+a zero-row load on a table that feeds a live dashboard).
 
 ## 5. RBAC
 
@@ -156,7 +150,7 @@ listed sees zero rows.
 
 Applying the policy to base tables means every view built on top
 (including both Streamlit dashboard tabs) inherits the same filtering
-automatically — no need to duplicate access logic per view.
+automatically.
 
 **Known limitation**: Streamlit-in-Snowflake apps execute with
 owner's-rights (like a stored procedure), so `CURRENT_ROLE()` inside an
@@ -186,8 +180,7 @@ skipping the summarization call for questions where the raw table is
 already self-explanatory.
 
 **Determinism**: `temperature=0` on both calls. Even at temperature 0,
-most hosted LLMs aren't perfectly deterministic run-to-run — worth
-being explicit about rather than overclaiming.
+most hosted LLMs aren't perfectly deterministic run-to-run.
 
 **Guardrails**: generated SQL is validated before execution — must be a
 single `SELECT` statement, must reference only `GOLD.*` objects, no
@@ -196,11 +189,7 @@ DDL/DML keywords, no cross-statement chaining. An adversarial test case
 prove the guardrail rejects unsafe requests rather than executing them.
 
 **Human-in-the-loop**: for this POC, every generated SQL statement is
-shown to the user alongside the answer (transparency, not a black box).
-In production, I'd route low-confidence or guardrail-adjacent cases to
-a review queue — conceptually the same pattern as the data quarantine
-tables already built for the pipeline itself — rather than either
-blocking every query or trusting every answer blindly.
+shown to the user alongside the answer . The benchmarks and guardrails themselves are human-defined — a person decides what "correct" looks like and what's safe to allow. Once opened up to end users, I'd add a feedback mechanism (thumbs up/down, or a short comment) on each question's SQL and answer. That feedback, combined with observed LLM performance over time, would feed back into refining the context — adding missing business definitions, clarifying ambiguous terms, or adding new golden-query examples.
 
 **Evaluation**: `benchmark.py` runs a fixed set of questions with
 known-correct answers (derived from manually-verified SQL), including a
@@ -212,7 +201,7 @@ is not available on this trial account. The agent is built as a
 standalone script rather than inside Snowflake (avoiding the need for
 an External Access Integration for outbound API calls on a trial
 account) — swapping in Cortex in production would be a contained change
-to `generate_sql()`/`summarize_result()`, not a redesign.
+to `generate_sql()`/`summarize_result()`.
 
 ## 7. CI/CD (Description)
 
@@ -261,7 +250,7 @@ means one unreadable file doesn't abort the whole run.
 - `IS_RED_BULL_PRODUCT` uses a brand/manufacturer text match — not
   independently verified against every edge case in the data.
 - The GenAI agent benchmark showed real failure cases during
-  development (investigated, not swept under the rug) — final accuracy
+  development (investigated) — final accuracy
   numbers and root causes are in `genai_poc/benchmark.py`'s output.
 - CI/CD is described, not implemented, given the time available for
   this exercise.
