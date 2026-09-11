@@ -115,7 +115,12 @@ def read_csv_robust(filepath: str, market: str) -> pd.DataFrame:
     """
     read_kwargs = dict(
         sep="\t", engine="c", dtype=str,
-        quoting=csv.QUOTE_MINIMAL, on_bad_lines="warn",
+        quoting=csv.QUOTE_MINIMAL, escapechar="\\", on_bad_lines="warn",
+        # escapechar="\\" — source data uses backslash-style internal quote
+        # escaping (e.g. \"Southern fried\") rather than standard CSV
+        # doubled-quote escaping (""), which caused rows to break at the
+        # first internal quote without this. Confirmed via manual raw-file
+        # inspection (see docs/system_design.md data quality findings).
     )
 
     for enc in ENCODING_CANDIDATES.get(market, ["utf-8"]):
