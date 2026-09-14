@@ -62,8 +62,7 @@ types, and future data sources without rewriting it each time.
 **Key discovery — the "ghost kitchen" pattern**: the initial assumption
 was that `id_outlet` + `id_platform` formed the outlet's grain. Verifying
 against real data showed `id_ext_link` is the true grain — the same
-`id_outlet` can host many distinct listings, reflecting real-world virtual restaurant brands sharing one commercial kitchen. This
-reshaped the model into two separate dimensions (location vs. listing)
+`id_outlet` can host many distinct listings, reflecting virtual restaurant brands sharing one commercial kitchen. This reshaped the model into two separate dimensions (location vs. listing)
 rather than one.
 
 **Entity resolution for brand counting**: naive name-string matching
@@ -91,7 +90,7 @@ All findings below were confirmed against real data:
 
 **Validation philosophy**: quarantine, don't discard. Every quarantined
 row is preserved and countable, so data completeness (`clean + quarantine
-= raw`) is provable, not assumed.
+= raw`) is provable.
 
 ## Observability — How You Know Something Broke
 
@@ -105,7 +104,7 @@ tests as Dagster asset checks directly) already provide exactly the
 self-serve model described below — a developer adding a new table
 declares its tests alongside the model definition, and checks run
 automatically as part of every pipeline run, with results visible
-per-asset in Dagster's UI rather than buried in a separate log.
+per-asset in Dagster's UI.
 
 **Common, reusable test types** (dbt's built-in generic tests cover
 most of these directly):
@@ -158,9 +157,7 @@ app always resolves to the app's owner, not the viewer — switching your
 own session role has no effect on what the app displays. Per-viewer
 RBAC inside Streamlit specifically requires `CURRENT_USER()`-based
 policies plus a `READ SESSION` grant. For this exercise, RBAC is
-demonstrated directly via SQL session role-switching in a worksheet,
-which is architecturally equivalent to how any other tool/BI client
-querying these tables would experience the policy.
+demonstrated directly via SQL session role-switching in a worksheet.
 
 ## 6. GenAI Data Agent
 
@@ -208,10 +205,7 @@ to `generate_sql()`/`summarize_result()`.
 Not built for this exercise, but the intended design:
 - GitHub Actions workflow triggered on PR to `main`
 - Lint/type-check Python (`ruff`/`mypy`)
-- Validate SQL syntax (`sqlfluff` or a dry-run against a scratch schema)
-- Run `ingestion.py` against a small test dataset into a scratch schema,
-  then run the Silver/Gold SQL, then assert row-count/quarantine-rate
-  sanity checks — catching a broken transformation before merge
+- Validate SQL syntax (`sqlfluff` or a dry-run against a scratch schema
 - On merge to `main`: deploy SQL changes to production schemas (via a
   migration tool or ordered script execution), redeploy the Streamlit
   app
@@ -242,15 +236,3 @@ means one unreadable file doesn't abort the whole run.
   warehouse; production would separate warehouses by workload (ETL vs.
   BI vs. ad hoc) so a heavy transformation run never competes with a
   dashboard user for compute.
-
-## 10. Known Limitations / Honest Caveats
-
-- Brand-count/multi-brand-hub metrics are a conservative estimate, not
-  a perfectly true count (unresolved matches are treated as distinct).
-- `IS_RED_BULL_PRODUCT` uses a brand/manufacturer text match — not
-  independently verified against every edge case in the data.
-- The GenAI agent benchmark showed real failure cases during
-  development (investigated) — final accuracy
-  numbers and root causes are in `genai_poc/benchmark.py`'s output.
-- CI/CD is described, not implemented, given the time available for
-  this exercise.
