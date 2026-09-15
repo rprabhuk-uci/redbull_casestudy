@@ -76,9 +76,6 @@ KNOWN_DATA_GAPS = """
   dataset at all — not a bug, a genuine source data gap. A question about
   USA menu items, prices, or brand competition should return an empty
   result or 0, not a fabricated number.
-- Roughly 1.3% of source portfolio rows had unresolvable data quality
-  issues and were excluded during cleaning (quarantined, not deleted) —
-  Gold-layer counts reflect only the clean, resolved subset of source data.
 """
 
 FULL_CONTEXT = f"""
